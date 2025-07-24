@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Netflix
+{% endblock title %}
+
+{% block others %}
+<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+{% endblock others %}
+
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<main class='bg-primary_black min-h-screen w-full'>
+
+    <!-- Showcase Hero Banner -->
+    {% if show_case %}
+    <section class="h-screen relative bg-no-repeat pb-8 pl-6 flex items-end bg-cover" style="background-image: url('{{ show_case.flyer.url }}');">
+        <div>
+            <h2 class="text-6xl font-semibold text-white my-4">
+                {{ show_case.title }}
+            </h2>
+            <p class="w-11/12 md:w-5/12 font-medium text-white my-4">
+                {{ show_case.description|slice:":100" }}...
+            </p>
+
+            <div class="flex my-4">
+                <!-- Play Button -->
+                <a href="{% url 'core:play' movie_id=show_case.uuid %}">
+                    <button class="flex items-center bg-white py-2 px-5 rounded-md text-black">
+                        <ion-icon name="play" class="text-2xl"></ion-icon>
+                        <span class="ml-3 font-medium">Play</span>
+                    </button>
+                </a>
+
+                <!-- More Info Button -->
+                <a href="{% url 'core:show_det' movie_id=show_case.uuid %}">
+                    <button class="ml-4 text-white flex items-center bg-gray-500 bg-opacity-80 py-2 px-5 rounded-md">
+                        <ion-icon name="information-circle-outline" class="text-2xl"></ion-icon>
+                        <span class="ml-3 font-medium">More Info</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <section class="h-96 flex justify-center items-center bg-gray-900">
+        <h2 class="text-white text-3xl">No featured movie available</h2>
+    </section>
+    {% endif %}
+
+    <!-- Movie List Section -->
+    <section class='bg-primary_black min-h-screen flex justify-center py-10'>
+        <div class="p-8 w-10/12 relative">
+            <h2 class="text-gray-200 text-2xl font-medium mb-4">
+                Popular on Netflix
+            </h2>
+
+            <div class="flex flex-wrap justify-start items-start">
+                {% for movie in movies %}
+                <div class="w-40 h-60 m-2 bg-gray-800 rounded-md overflow-hidden shadow-md transform hover:scale-105 transition-all duration-300">
+                    <a href="{% url 'core:show_det' movie_id=movie.uuid %}">
+                        <img src="{{ movie.flyer.url }}" alt="{{ movie.title }}" class="w-full h-full object-cover">
+                    </a>
+                </div>
+                {% empty %}
+                <p class="text-white">No movies found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</main>
+{% endblock content %}

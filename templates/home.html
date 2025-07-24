@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Link to your custom CSS file -->
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 p-0">
+      <div id="hero-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'C:\Users\Bhushan\Downloads\Netflix\static\background_netflix.jpg' %}" class="d-block w-100" alt="Hero Image">
+            <div class="carousel-caption d-none d-md-block">
+              <h1 class="display-4 text-white font-weight-bold">Welcome to Netflix</h1>
+              <p class="lead text-white">Enjoy the latest movies and TV shows.</p>
+              <a href="#" class="btn btn-danger btn-lg">Start Watching</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% for category in categories %}
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3 class="text-white">{{ category.name }}</h3>
+    </div>
+  </div>
+  <div class="row">
+    {% for movie in movies %}
+      {% if movie.category == category %}
+      <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+        <a href="{% url 'movie_detail' movie.id %}" class="text-decoration-none">
+          <div class="card bg-dark border-0">
+            <img src="{{ movie.thumbnail.url }}" class="card-img-top" alt="{{ movie.title }}">
+            <div class="card-body p-2">
+              <h6 class="card-title text-white text-center">{{ movie.title }}</h6>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
